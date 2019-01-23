@@ -1,33 +1,27 @@
 language: python
-  
 python:
 - '3.6'
-- '3.7-dev'
-
+- 3.7-dev
 install:
 - pip install -r requirements.txt
-
 script:
 - python -m unittest test.testapi
-
 branches:
   only:
-    - master
-    - dev
-
+  - master
+  - dev
 deploy:
   provider: pypi
-  user: "Elton_Chou"
+  user: Elton_Chou
   password:
-    secure: VoYW1kNrImkyDGYxGp3JhGc+FOJLDkFIVqCvEUYB9FpOyYTdr5nTT2v+4V9HiC2B0qR9J+s81cIsVcTtHgza86ZrIiO6zKm5oo+odgLJ3iauIY/TX+dd/f7QSDzxGrUSP0obxrTT6eE0UoktCQp8IgsWOsCKfpstGCtfXK6+GeCdU146iMXyhzchNxfAGvJva2K6uFX/BbGcPCZoJsrcxrNOUY8U74RcpGa4H+sTeE+uLeyBOvJ/T5dljDHBOaksaXzkctu2p/FhWNhIGW0or+0pE7YijeCXBxZ8GIV+P+zgKN7bl0gHxukmDGpgmcskqI6H/ABuU6o6Go1+oxBVnCnMghoo8CXO4iDRmR+aTc1aFfxAPcGLhSjfQuZ0HINpnpVbNP36LS0cnx1EG/hZg/GEMAflLDu8GPfkJoXXsaktXesVBBrtMYqyC2Qk4TAP+WFIsJo7pDDaPYiUKkZcyZbbtQiUpJ9rsO6FF1XXfrivO2gz6pggFYhZrKDwqUM8/AGZ59wINDFpa6s877dsjUMWoiL6xxATesW/+biu5RrKyYs+tUgc+MvmYEaz1m1CzZCYEmp6jyuIFS6U+XxV1Lx2FJtQwBpUEzJlJdUV5goBbFczaQz6mj4YEhTm0nCsbqyJ0KRoGV/37qzpjBhjQSyamW0s/aKLuybSj9Qpxng=
+    secure: dFfAmSP4RGTW34OvKJFKmnzTxwnAI/30u9w2X7HcuhopBjM1dLdl9yQ8Pltz1jPWC69BSezds6vVPlLYBSt9Lu6GkJNyYcA5KDjoU5Qf10gSOxi328w+Nv6dzwnUcGdHoRdvOpGNuXcybVF2pz0piLDSZz3TJIk68wYzWhv5K3Ri+lumuQ/Vq+esCA5AzOrSAl9Osa6GAto68Dcg2V/m4auJZjjodJGDi/ZQNSWpD2yurLkmB0tn/vyVG2xmCXqlUOo0HE4E1N1aOZDVxB913AalEnt5PIq+6W3ntMuXU+QbhbqDdETy7DROA9q/zmcTk2kguc32hOQBuKOvYfyebPkwOonX6ljjIyzt/SA2l5S46cbsWeimdHXv1eHOwotIDkFQs/oylNFGPXE+34SVffacD5Fy2FtYVU4PSx6Q4luDQTb3opsh2ur3fRJ+6PB6Rb/vBHVIv6Wg5Kzo+MNKHvTR0cIODp+z1k7BrM7v+E7wJmtws027QEE7sWVLVJEsEV8p6eA6bOs/Vc8t/6Qv84QmMUDU7bWTczzP7aFqeq7n1rvuSJGCgSPlB82ZSSab/m11HUwOcYooytDJN17Q+DJPXCWy8jNoPEyht2nasJib1yuAmnMiaIoX8yQ0thS6C0glkrqbjlOS0Ko6pqAQTzyQEM/ezXS0EU4Ki5eZt1U=
   on:
     branch: master
-
 after_success:
-  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-  - chmod +x send.sh
-  - ./send.sh success $WEBHOOK_URL
+- wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+- chmod +x send.sh
+- "./send.sh success $WEBHOOK_URL"
 after_failure:
-  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-  - chmod +x send.sh
-  - ./send.sh failure $WEBHOOK_URL
+- wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
+- chmod +x send.sh
+- "./send.sh failure $WEBHOOK_URL"
