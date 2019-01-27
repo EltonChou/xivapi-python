@@ -1,46 +1,34 @@
 import requests
+from .core import Core
+# from .paginator import Paginator
 
 
-API_BASE = 'https://xivapi.com/'
+class Client(Core):
 
-
-class Client:
-
-    __slots__ = 'api_key', 'language', 'pretty', 'snake_case', 'test_mode'
-
-    SUPPORT_LANGUAGE = ['en', 'jp', 'de', 'fr']
-    CHARACTER_DATA = ['AR', 'FR', 'FC', 'FCM', 'PVP']
+    __SUPPORT_LANGUAGE = ['en', 'jp', 'de', 'fr', 'cn', 'kr']
+    __CHARACTER_DATA = ['AR', 'FR', 'FC', 'FCM', 'PVP']
 
     def __init__(self, api_key, **kwargs):
-        self.api_key = api_key
-        self.language = kwargs.get('language', None)
-        self.pretty = kwargs.get('pretty', False)
-        self.snake_case = kwargs.get('snake_case', False)
+        super().__init__(api_key)
         self.test_mode = kwargs.get('test_mode', False)
-
-    @property
-    def params(self):
-        return {
-            'key': self.api_key,
-            'language': self.language,
-            'pretty': self.pretty,
-            'snake_case': self.snake_case
+        self.params = {
+            'language': kwargs.get('language', False),
+            'pretty': kwargs.get('pretty', False),
+            'snake_case': kwargs.get('snake_case', False)
         }
 
-    def get(self, endpoint, params={}):
-        url = request_url(endpoint)
-        r = requests.get(url, params={**self.params, **params})
-        if self.test_mode:
-            return r
-        return r.json()
+    def get(self, endpoint, params=None):
+        if not params:
+            params = {}
+        return super().get(endpoint, params={**self.params, **params})
 
     def search(self, **kwargs):
         return self.get('search', kwargs)
 
-    def lore(self, string):
+    def lore(self, string: str):
         return self.get('lore', {"string": string})
 
-    def content(self, content=None, **kwargs):
+    def content(self, content=None, limit=100, ids=None, **kwargs):
         if not content:
             return self.get('content')
 
@@ -117,7 +105,3 @@ class Client:
 
     def patchlist(self):
         return self.get('patchlist')
-
-
-def request_url(endpoint):
-    return '{}{}'.format(API_BASE, endpoint)
