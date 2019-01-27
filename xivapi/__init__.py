@@ -1,36 +1,35 @@
 import requests
-from .core import Core
+import json
 # from .paginator import Paginator
 
 
-class Client(Core):
+class Client:
 
+    __API_BASE = 'https://xivapi.com/'
     __SUPPORT_LANGUAGE = ['en', 'jp', 'de', 'fr', 'cn', 'kr']
     __CHARACTER_DATA = ['AR', 'FR', 'FC', 'FCM', 'PVP']
 
-    def __init__(self, api_key, **kwargs):
-        super().__init__(api_key)
-        self.test_mode = kwargs.get('test_mode', False)
-        self.params = {
-            'language': kwargs.get('language', False),
-            'pretty': kwargs.get('pretty', False),
-            'snake_case': kwargs.get('snake_case', False)
-        }
+    def __init__(self, api_key, test_mode=False, **kwargs):
+        self.test_mode = test_mode
+        self.params = {**kwargs}
+        self.params['key'] = api_key
 
-    def get(self, endpoint, params=None):
-        if not params:
-            params = {}
-        return super().get(endpoint, params={**self.params, **params})
+    def search(self, string=None, **kwargs):
+        return self.get('search', params=kwargs)
 
-    def search(self, **kwargs):
-        return self.get('search', kwargs)
-
-    def lore(self, string: str):
-        return self.get('lore', {"string": string})
+    def lore(self, string=None, **kwargs):
+        return self.get('lore', params=kwargs)
 
     def content(self, content=None, limit=100, ids=None, **kwargs):
         if not content:
             return self.get('content')
+
+        if limit > 3000:
+            limit = 3000
+        kwargs['limit'] = limit
+        
+        if ids:
+            kwargs['ids'] = ','.join([str(id) for id in ids])
 
         return self.get(content, params=kwargs)
 
@@ -38,7 +37,7 @@ class Client(Core):
         return self.get('{}/schema'.format(content))
 
     def servers(self, group=False):
-        endpoint = 'servers/dc' if group else 'server'
+        endpoint = 'servers/dc' if group else 'servers'
         return self.get(endpoint)
 
     def character(self, id, **kwargs):
@@ -105,3 +104,14 @@ class Client(Core):
 
     def patchlist(self):
         return self.get('patchlist')
+
+    def get(self, endpoint, params=None):
+        if not params:
+            params = {}
+
+        url = '{}{}'.format(self.__API_BASE, endpoint)
+        r = requests.get(url, json={**self.params, **params})
+
+        if self.test_mode:
+            return r
+        return r.json()
