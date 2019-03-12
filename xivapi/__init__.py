@@ -29,12 +29,12 @@ class Client(Core):
         r = await self.__get('lore', {'string': string})
         return r
 
-    async def content(self, content=None, _id=None, limit=100, **kwargs):
+    async def content(self, content=None, id_=None, limit=100, **kwargs):
         endpoint = content if content else 'content'
         if content:
             kwargs['limit'] = limit
-            if _id:
-                kwargs['id'] = _id
+            if id_:
+                endpoint = '{}/{}'.format(endpoint, id_)
         r = await self.__get(endpoint, params=kwargs)
         return r
 
