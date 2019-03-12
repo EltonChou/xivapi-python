@@ -77,6 +77,30 @@ class TestApi:
         assert r is 200
         assert r_s is 200
 
+    def test_lodestone(cls):
+        r = cls.run(cls.xivapi.lodestone())
+        r_news = cls.run(cls.xivapi.lodestone_news())
+        r_notice = cls.run(cls.xivapi.lodestone_notices())
+        r_mainten = cls.run(cls.xivapi.lodestone_maintenance())
+        r_update = cls.run(cls.xivapi.lodestone_updates())
+        r_status = cls.run(cls.xivapi.lodestone_status())
+        r_wstatus = cls.run(cls.xivapi.lodestone_worldstatus())
+        r_db = cls.run(cls.xivapi.lodestone_devblog())
+        r_dp = cls.run(cls.xivapi.lodestone_devposts())
+        r_dd = cls.run(cls.xivapi.lodestone_deepdungeon())
+        r_f = cls.run(cls.xivapi.lodestone_feasts())
+        assert r is 200
+        assert r_news is 200
+        assert r_notice is 200
+        assert r_mainten is 200
+        assert r_update is 200
+        assert r_status is 200
+        assert r_wstatus is 200
+        assert r_db is 200
+        assert r_dp is 200
+        assert r_dd is 200
+        assert r_f is 200
+
     def test_market(cls):
         # ! This endpoint has been disabled at this time.
         r_p = cls.run(cls.xivapi.market_price('phoenix', 5))

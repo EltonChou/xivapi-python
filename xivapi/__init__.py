@@ -17,7 +17,7 @@ class Client(Core):
         if not params:
             params = {}
         params = {**self.params, **params}
-        result = await super().get(endpoint, params=params)
+        result = await self.get(endpoint, params=params)
         return result
 
     async def search(self, string, **kwargs):
@@ -47,19 +47,19 @@ class Client(Core):
         r = await self.__get(endpoint)
         return r
 
-    async def character(self, _id, **kwargs):
-        r = await self.__get('character/{}'.format(_id), params=kwargs)
+    async def character(self, id_, **kwargs):
+        r = await self.__get('character/{}'.format(id_), params=kwargs)
         return r
 
     async def character_search(self, name, server=None, page=None):
-        params = self.__nsp(name, server, page)
+        params = _nsp(name, server, page)
         r = await self.__get('character/search', params=params)
         return r
 
-    async def character_verification(self, _id, token):
+    async def character_verification(self, id_, token):
         params = {'token': token}
         r = await self.__get(
-            'character/{}/verification'.format(_id),
+            'character/{}/verification'.format(id_),
             params=params
         )
         return r
@@ -68,21 +68,21 @@ class Client(Core):
         r = await self.__get('character/{}/update'.format(_id))
         return r
 
-    async def freecompany(self, _id, **kwargs):
-        r = await self.__get('freecompany/{}'.format(_id))
+    async def freecompany(self, id_, **kwargs):
+        r = await self.__get('freecompany/{}'.format(id_))
         return r
 
     async def freecompany_search(self, name, server=None, page=None):
-        params = self.__nsp(name, server, page)
+        params = _nsp(name, server, page)
         r = await self.__get('freecompany/search', params=params)
         return r
 
-    async def linkshell(self, _id, **kwargs):
-        r = await self.__get('linkshell/{}'.format(_id))
+    async def linkshell(self, id_, **kwargs):
+        r = await self.__get('linkshell/{}'.format(id_))
         return r
 
     async def linkshell_search(self, name, server=None, page=None):
-        params = self.__nsp(name, server, page)
+        params = _nsp(name, server, page)
         r = await self.__get('linkshell/search', params=params)
         return r
 
@@ -91,8 +91,52 @@ class Client(Core):
         return r
 
     async def pvpteam_search(self, name, server=None, page=None):
-        params = self.__nsp(name, server, page)
+        params = _nsp(name, server, page)
         r = await self.__get('pvpteam/search', params=params)
+        return r
+
+    async def lodestone(self):
+        r = await self.__get('lodestone')
+        return r
+
+    async def lodestone_news(self):
+        r = await self.__get('lodestone/news')
+        return r
+
+    async def lodestone_notices(self):
+        r = await self.__get('lodestone/notices')
+        return r
+
+    async def lodestone_maintenance(self):
+        r = await self.__get('lodestone/maintenance')
+        return r
+
+    async def lodestone_updates(self):
+        r = await self.__get('lodestone/updates')
+        return r
+
+    async def lodestone_status(self):
+        r = await self.__get('lodestone/status')
+        return r
+
+    async def lodestone_worldstatus(self):
+        r = await self.__get('lodestone/worldstatus')
+        return r
+
+    async def lodestone_devblog(self):
+        r = await self.__get('lodestone/devblog')
+        return r
+
+    async def lodestone_devposts(self):
+        r = await self.__get('lodestone/devposts')
+        return r
+
+    async def lodestone_deepdungeon(self):
+        r = await self.__get('lodestone/deepdungeon')
+        return r
+
+    async def lodestone_feasts(self):
+        r = await self.__get('lodestone/feasts')
         return r
 
     async def market_price(self, server, item_id):
@@ -119,12 +163,12 @@ class Client(Core):
         r = await self.__get('patchlist')
         return r
 
-    @staticmethod
-    def __nsp(name, server, page):
-        params = {'name': name}
-        if server:
-            params['server'] = server
-        if page:
-            params['page'] = page
 
-        return params
+def _nsp(name, server, page):
+    params = {'name': name}
+    if server:
+        params['server'] = server
+    if page:
+        params['page'] = page
+
+    return params

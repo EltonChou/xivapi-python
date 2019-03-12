@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     name="xivapi",
-    version="0.0.1dev1",
+    version="0.1.0",
     author="Elton H.Y. Chou",
     author_email="plscd748@gmail.com",
     license="MIT",
@@ -18,7 +18,7 @@ setuptools.setup(
     install_requires=['request'],
     python_requires='>=3.6.0',
     classifiers=[
-        "Development Status :: 1 - Planning",
+        "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
         "Topic :: Utilities",
         "Programming Language :: Python :: 3.6",
