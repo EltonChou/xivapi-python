@@ -7,7 +7,6 @@ class Client(Core):
     __SUPPORT_LANGUAGE = ['en', 'jp', 'de', 'fr', 'cn', 'kr']
     __CHARACTER_DATA = ['AR', 'FR', 'FC', 'FCM', 'PVP']
 
-    # FIXME: This is weired
     def __init__(self, api_key, test_mode=False, **kwargs):
         super().__init__(api_key, test_mode)
         self.params = {}
@@ -30,12 +29,12 @@ class Client(Core):
         r = await self.__get('lore', {'string': string})
         return r
 
-    async def content(self, content=None, ids=None, limit=100, **kwargs):
+    async def content(self, content=None, _id=None, limit=100, **kwargs):
         endpoint = content if content else 'content'
         if content:
             kwargs['limit'] = limit
-            if ids:
-                kwargs['id'] = ids
+            if _id:
+                kwargs['id'] = _id
         r = await self.__get(endpoint, params=kwargs)
         return r
 
@@ -44,12 +43,12 @@ class Client(Core):
         return r
 
     async def servers(self, group=False):
-        endpoint = 'servers/dc' if group else 'server'
+        endpoint = 'servers/dc' if group else 'servers'
         r = await self.__get(endpoint)
         return r
 
-    async def character(self, id, **kwargs):
-        r = await self.__get('character/{}'.format(id), params=kwargs)
+    async def character(self, _id, **kwargs):
+        r = await self.__get('character/{}'.format(_id), params=kwargs)
         return r
 
     async def character_search(self, name, server=None, page=None):
@@ -57,17 +56,20 @@ class Client(Core):
         r = await self.__get('character/search', params=params)
         return r
 
-    async def character_verification(self, id, token):
+    async def character_verification(self, _id, token):
         params = {'token': token}
-        r = await self.__get('character/{}/verification'.format(id), params=params)
+        r = await self.__get(
+            'character/{}/verification'.format(_id),
+            params=params
+        )
         return r
 
-    async def character_update(self, id):
-        r = await self.__get('character/{}/update'.format(id))
+    async def character_update(self, _id):
+        r = await self.__get('character/{}/update'.format(_id))
         return r
 
-    async def freecompany(self, id, **kwargs):
-        r = await self.__get('freecompany/{}'.format(id))
+    async def freecompany(self, _id, **kwargs):
+        r = await self.__get('freecompany/{}'.format(_id))
         return r
 
     async def freecompany_search(self, name, server=None, page=None):
@@ -75,8 +77,8 @@ class Client(Core):
         r = await self.__get('freecompany/search', params=params)
         return r
 
-    async def linkshell(self, id, **kwargs):
-        r = await self.__get('linkshell/{}'.format(id))
+    async def linkshell(self, _id, **kwargs):
+        r = await self.__get('linkshell/{}'.format(_id))
         return r
 
     async def linkshell_search(self, name, server=None, page=None):
@@ -84,8 +86,8 @@ class Client(Core):
         r = await self.__get('linkshell/search', params=params)
         return r
 
-    async def pvpteam(self, id):
-        r = await self.__get('pvpteam/{}'.format(id))
+    async def pvpteam(self, _id):
+        r = await self.__get('pvpteam/{}'.format(_id))
         return r
 
     async def pvpteam_search(self, name, server=None, page=None):
@@ -98,11 +100,15 @@ class Client(Core):
         return r
 
     async def market_price_history(self, server, item_id):
-        r = await self.__get('market/{}/items/{}/history'.format(server, item_id))
+        r = await self.__get(
+            'market/{}/items/{}/history'.format(server, item_id)
+        )
         return r
 
     async def market_category(self, server, category_id):
-        r = await self.__get('market/{}/category/{}'.format(server, category_id))
+        r = await self.__get(
+            'market/{}/category/{}'.format(server, category_id)
+        )
         return r
 
     async def market_categories(self):
@@ -115,10 +121,10 @@ class Client(Core):
 
     @staticmethod
     def __nsp(name, server, page):
-        p = {'name': name}
+        params = {'name': name}
         if server:
             params['server'] = server
         if page:
             params['page'] = page
 
-        return p
+        return params

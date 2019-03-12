@@ -44,10 +44,13 @@ class TestApi:
         assert r_g is 200
 
     def test_character(cls):
-        r = cls.run(cls.xivapi.character(730968))
-        r_s = cls.run(cls.xivapi.character_search('hagia karahalios', 'Bahamut'))
-        r_v = cls.run(cls.xivapi.character_verification(730968, '?'))
-        r_u = cls.run(cls.xivapi.character_update(730968))
+        _id = 730968
+        r = cls.run(cls.xivapi.character(_id))
+        r_s = cls.run(
+            cls.xivapi.character_search('hagia karahalios', 'Bahamut')
+        )
+        r_v = cls.run(cls.xivapi.character_verification(_id, '?'))
+        r_u = cls.run(cls.xivapi.character_update(_id))
         assert r is 200
         assert r_s is 200
         assert r_v is 200
@@ -55,7 +58,9 @@ class TestApi:
 
     def test_fc(cls):
         r = cls.run(cls.xivapi.freecompany(9231253336202687179))
-        r_s = cls.run(cls.xivapi.freecompany_search('Firelink Shrine', 'Bahamut'))
+        r_s = cls.run(
+            cls.xivapi.freecompany_search('Firelink Shrine', 'Bahamut')
+        )
         assert r is 200
         assert r_s is 200
 
@@ -66,7 +71,8 @@ class TestApi:
         assert r_s is 200
 
     def test_pvp(cls):
-        r = cls.run(cls.xivapi.pvpteam('fe35a6801f223df825c60a090285ab9b15eedb14'))
+        _id = 'fe35a6801f223df825c60a090285ab9b15eedb14'
+        r = cls.run(cls.xivapi.pvpteam(_id))
         r_s = cls.run(cls.xivapi.pvpteam_search('-DAIGINJO-'))
         assert r is 200
         assert r_s is 200
@@ -77,9 +83,9 @@ class TestApi:
         r_h = cls.run(cls.xivapi.market_price_history('phoenix', 5))
         r_c = cls.run(cls.xivapi.market_category('phoenix', 10))
         r_cs = cls.run(cls.xivapi.market_categories())
-        assert r_p == 500 
-        assert r_h == 500 
-        assert r_c == 500 
+        assert r_p == 500
+        assert r_h == 500
+        assert r_c == 500
         assert r_cs is 200
 
     def test_patch(cls):
