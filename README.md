@@ -1,3 +1,5 @@
+[![Pypi](https://img.shields.io/pypi/v/xivapi.svg?style=flat-square)](https://pypi.org/project/xivapi/)
+[![Pypi](https://img.shields.io/pypi/pyversions/xivapi.svg?style=flat-square)](https://pypi.org/project/xivapi/)
 # xivapi-python
 [xivapi](https://xivapi.com) wrapper in python
 
