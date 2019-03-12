@@ -1,4 +1,4 @@
-import requests
+import asyncio
 from .core import Core
 
 
@@ -14,78 +14,98 @@ class Client(Core):
         for k, v in kwargs.items():
             self.params[k] = v
 
-    def __get(self, endpoint, params=None):
+    async def __get(self, endpoint, params=None):
         if not params:
             params = {}
-        return super().get(endpoint, params={**self.params, **params})
+        params = {**self.params, **params}
+        result = await super().get(endpoint, params=params)
+        return result
 
-    def search(self, **kwargs):
-        return self.__get('search', kwargs)
+    async def search(self, **kwargs):
+        r = await self.__get('search', kwargs)
+        return r
 
-    def lore(self, string: str):
-        return self.__get('lore', {"string": string})
+    async def lore(self, string: str):
+        r = await self.__get('lore', {'string': string})
+        return r
 
-    def content(self, content=None, limit=100, ids=None, **kwargs):
-        if not content:
-            return self.__get('content')
+    async def content(self, content=None, limit=100, ids=None, **kwargs):
+        endpoint = content if content else 'content'
+        r = await self.__get(endpoint, params=kwargs)
+        return r
 
-        return self.__get(content, params=kwargs)
+    async def schema(self, content):
+        r = await self.__get('{}/schema'.format(content))
+        return r
 
-    def schema(self, content):
-        return self.__get('{}/schema'.format(content))
-
-    def servers(self, group=False):
+    async def servers(self, group=False):
         endpoint = 'servers/dc' if group else 'server'
-        return self.__get(endpoint)
+        r = await self.__get(endpoint)
+        return r
 
-    def character(self, id, **kwargs):
-        return self.__get('character/{}'.format(id), params=kwargs)
+    async def character(self, id, **kwargs):
+        r = await self.__get('character/{}'.format(id), params=kwargs)
+        return r
 
-    def character_search(self, name, server=None, page=None):
+    async def character_search(self, name, server=None, page=None):
         params = self.__nsp(name, server, page)
-        return self.__get('character/search', params=params)
+        r = await self.__get('character/search', params=params)
+        return r
 
-    def character_verification(self, id):
-        return self.__get('character/{}/verification'.format(id))
+    async def character_verification(self, id):
+        r = await self.__get('character/{}/verification'.format(id))
+        return r
 
-    def character_update(self, id):
-        return self.__get('character/{}/update'.format(id))
+    async def character_update(self, id):
+        r = await self.__get('character/{}/update'.format(id))
+        return r
 
-    def freecompany(self, id, **kwargs):
-        return self.__get('freecompany/{}'.format(id))
+    async def freecompany(self, id, **kwargs):
+        r = await self.__get('freecompany/{}'.format(id))
+        return r
 
-    def freecompany_search(self, name, server=None, page=None):
+    async def freecompany_search(self, name, server=None, page=None):
         params = self.__nsp(name, server, page)
-        return self.__get('freecompany/search', params=params)
+        r = await self.__get('freecompany/search', params=params)
+        return r
 
-    def linkshell(self, id, **kwargs):
-        return self.__get('linkshell/{}'.format(id))
+    async def linkshell(self, id, **kwargs):
+        r = await self.__get('linkshell/{}'.format(id))
+        return r
 
-    def linkshell_search(self, name, server=None, page=None):
+    async def linkshell_search(self, name, server=None, page=None):
         params = self.__nsp(name, server, page)
-        return self.__get('linkshell/search', params=params)
+        r = await self.__get('linkshell/search', params=params)
+        return r
 
-    def pvpteam(self, id):
-        return self.__get('pvpteam/{}'.format(id))
+    async def pvpteam(self, id):
+        r = await self.__get('pvpteam/{}'.format(id))
+        return r
 
-    def pvpteam_search(self, name, server=None, page=None):
+    async def pvpteam_search(self, name, server=None, page=None):
         params = self.__nsp(name, server, page)
-        return self.__get('pvpteam/search', params=params)
+        r = await self.__get('pvpteam/search', params=params)
+        return r
 
-    def market_price(self, server, item_id):
-        return self.__get('market/{}/items/{}'.format(server, item_id))
+    async def market_price(self, server, item_id):
+        r = await self.__get('market/{}/items/{}'.format(server, item_id))
+        return r
 
-    def market_price_history(self, server, item_id):
-        return self.__get('market/{}/items/{}/history'.format(server, item_id))
+    async def market_price_history(self, server, item_id):
+        r = await self.__get('market/{}/items/{}/history'.format(server, item_id))
+        return r
 
     def market_category(self, server, category_id):
-        return self.__get('market/{}/category/{}'.format(server, category_id))
+        r = await self.__get('market/{}/category/{}'.format(server, category_id))
+        return r
 
     def market_categories(self):
-        return self.__get('market/categories')
+        r = await self.__get('market/categories')
+        return r
 
     def patchlist(self):
-        return self.__get('patchlist')
+        r = await self.__get('patchlist')
+        return r
 
     @staticmethod
     def __nsp(name, server, page):
