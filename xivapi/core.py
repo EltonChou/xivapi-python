@@ -1,5 +1,4 @@
 import aiohttp
-import requests
 
 
 class Core:
@@ -10,20 +9,16 @@ class Core:
         self.api_key = api_key
         self.test_mode = test_mode
 
-    def get(self, endpoint, params=None):
+    async def get(self, endpoint, params=None):
         if not params:
             params = {}
         params['key'] = self.api_key
         url = self.request_url(endpoint)
-        # async with aiohttp.ClientSession() as session:
-        #     async with session.get(url) as r:
-        #         if self.test_mode:
-        #             return await r
-        #         return await r.json()
-        r = requests.get(url, params)
-        if self.test_mode:
-            return r
-        return r.json()
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, json=params) as r:
+                if self.test_mode:
+                    return r.status
+                return await r.json()
 
     def request_url(self, endpoint):
         return '{}{}'.format(self.__API_BASE, endpoint)

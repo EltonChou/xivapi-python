@@ -1,0 +1,12 @@
+{
+    "python.pythonPath": "/Users/ika/.pyenv/versions/xivapi/bin/python",
+    "python.linting.pylintEnabled": false,
+    "python.linting.pep8Enabled": true,
+    "python.linting.enabled": true,
+    "python.unitTest.unittestEnabled": false,
+    "python.unitTest.pyTestEnabled": true,
+    "python.unitTest.nosetestsEnabled": false,
+    "python.unitTest.pyTestArgs": [
+        "test"
+    ],
+}
