@@ -15,7 +15,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/EltonChou/xivapi-python",
     packages=setuptools.find_packages(),
-    install_requires=['asyncio, aiohttp, cchardet, aiodns'],
+    install_requires=['asyncio', 'aiohttp', 'cchardet', 'aiodns'],
     python_requires='>=3.7.0',
     classifiers=[
         "Development Status :: 3 - Alpha",
