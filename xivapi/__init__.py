@@ -21,7 +21,8 @@ class Client(Core):
         result = await super().get(endpoint, params=params)
         return result
 
-    async def search(self, **kwargs):
+    async def search(self, string, **kwargs):
+        kwargs['string'] = string
         r = await self.__get('search', kwargs)
         return r
 
@@ -29,8 +30,12 @@ class Client(Core):
         r = await self.__get('lore', {'string': string})
         return r
 
-    async def content(self, content=None, limit=100, ids=None, **kwargs):
+    async def content(self, content=None, ids=None, limit=100, **kwargs):
         endpoint = content if content else 'content'
+        if content:
+            kwargs['limit'] = limit
+            if ids:
+                kwargs['id'] = ids
         r = await self.__get(endpoint, params=kwargs)
         return r
 
@@ -52,8 +57,9 @@ class Client(Core):
         r = await self.__get('character/search', params=params)
         return r
 
-    async def character_verification(self, id):
-        r = await self.__get('character/{}/verification'.format(id))
+    async def character_verification(self, id, token):
+        params = {'token': token}
+        r = await self.__get('character/{}/verification'.format(id), params=params)
         return r
 
     async def character_update(self, id):
@@ -95,15 +101,15 @@ class Client(Core):
         r = await self.__get('market/{}/items/{}/history'.format(server, item_id))
         return r
 
-    def market_category(self, server, category_id):
+    async def market_category(self, server, category_id):
         r = await self.__get('market/{}/category/{}'.format(server, category_id))
         return r
 
-    def market_categories(self):
+    async def market_categories(self):
         r = await self.__get('market/categories')
         return r
 
-    def patchlist(self):
+    async def patchlist(self):
         r = await self.__get('patchlist')
         return r
 
